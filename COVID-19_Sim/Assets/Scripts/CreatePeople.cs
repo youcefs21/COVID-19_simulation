@@ -5,33 +5,36 @@ using UnityEngine;
 public class CreatePeople : MonoBehaviour
 {
     public GameObject myPrefab;
-    public static int x;
-    public static int y;
 
+    int toSpawn;
+    int timestamps = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        x = 100;
-        y = 100;
+        toSpawn = 100;
 
-        for (int i = 0; i < x; i++)
-        {
-            for (int j = 0; j < y; j++)
-            {
-                Instantiate(myPrefab, new Vector3(i, 0.5f, j), Quaternion.identity);
-          
-
-            }
-        }
 
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(Time.time);
+        
+        if (Time.time > timestamps)
+        {
+            if (toSpawn > 0)
+            {
+                timestamps = timestamps+1;
+                toSpawn--;
+                for (int i = 0; i<10;i++)
+                {
+                    Instantiate(myPrefab, new Vector3(23.5f, 0.5f, -52.15f), Quaternion.identity);
+                }
 
-       
+            }
+        }
     }
 }
 
