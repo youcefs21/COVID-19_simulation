@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class EntityBehaviour : MonoBehaviour {
     static double infectionDistance = 3.00; //to be slidered
-    static double deathRate = 0.10;
-    static double symptomaticRate = 0.98;
+    static double deathRate = 0.10; //0 to 1
+    static double infectedRate = 0.98; //0 to 1
 
     bool infected = false;
-    bool symptomatic= false;
+    bool infected= false;
     bool immune = false;
     double socialDistance = 2.00; //to be adjustible
     bool quarantined = false;
     bool dead = false;
     int quarantineTimer = 0; //24 ticks per day, 336 ticks for full quarantine
-
-    
+    int infectedTimer = 0;
+    int asymptomaticTimer =0;
 
     public EntityBehaviour(){
 
@@ -27,15 +27,19 @@ public class EntityBehaviour : MonoBehaviour {
         
     }
 
+    void Update() {
+        if (infected){
+            runStatus();
+        }
+        else{
+            //run daily life
+        }
+
+    }
+
     void infect(){
         infected = true;
-        if (UnityEngine.Random.value<=symptomaticRate) {
-            symptomatic = true;
-            decideQuarantine();
-            if (quarantined){ //if quarantined, quarantine for 14 days
-                quarantineTimer = 336;
-            }
-        }
+        infectedTimer = 168;
     }
 
     void decideQuarantine(){
@@ -48,8 +52,25 @@ public class EntityBehaviour : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update() {
-        if (quarantined){
+    
+
+    void runStatus(){
+        //if infected but not infected
+        if (infectedTimer>0){
+            infectedTimer--;
+            //now decide if symptoms
+            if (infectedTimer==0){
+                UnityEngine.Random.value();
+            }
+            else{
+                //don't know sick yet, will continue life
+            }
+        }
+        else if (asymptomaticTimer>0){
+            //decrease symptomatic timer, if 0 then cure
+            //run daily life
+        }
+        else if (quarantined){
             //check dead
             
             quarantineTimer--;
@@ -58,10 +79,7 @@ public class EntityBehaviour : MonoBehaviour {
                 infected = false;
                 immune = true;
             }
+        }
 
-        }
-        else{
-            //run daily life
-        }
     }
 }
