@@ -13,15 +13,11 @@ public class personlogic : MonoBehaviour
     public float infectionRadius;
     RaycastHit hit;
     Ray ray;
+    int home;
 
     void Start()
     {
-        float x = Buildings.buildings[0].getX();
-        float y = 0.5f;
-        float z = Buildings.buildings[0].getZ();
-
-        Vector3 destination = new Vector3(x, y, z);
-        agent.SetDestination(destination);
+        findHome();
     }
 
     public void infect()
@@ -50,51 +46,83 @@ public class personlogic : MonoBehaviour
 
     private void FixedUpdate()
    {
+       int rand = Random.Range(0, 100);
        ray = new Ray(transform.position, Vector3.back);
-       Debug.DrawRay(transform.position, Vector3.back, Color.yellow);
+       //Debug.DrawRay(transform.position, Vector3.back, Color.yellow);
 
        if (Physics.Raycast(ray, out hit, infectionRadius) && hit.transform.CompareTag("Infected"))
        {
             //PROBABILITY STUFF HERE
-            personlogic person = hit.collider.GetComponent<personlogic>();
-            person.infect();
-            this.tag = "Infected";
+            if (rand == 69)
+            {
+                personlogic person = hit.collider.GetComponent<personlogic>();
+                person.infect();
+                this.tag = "Infected";
+            }
        }
 
        ray.direction = Vector3.forward;
-       Debug.DrawRay(transform.position, Vector3.forward, Color.yellow);
+       //Debug.DrawRay(transform.position, Vector3.forward, Color.yellow);
         
         if (Physics.Raycast(ray, out hit, infectionRadius) && hit.transform.CompareTag("Infected"))
        {
             //PROBABILITY STUFF HERE
-            personlogic person = hit.collider.GetComponent<personlogic>();
-            person.infect();
-            this.tag = "Infected";
+            if (rand == 69)
+            {
+                personlogic person = hit.collider.GetComponent<personlogic>();
+                person.infect();
+                this.tag = "Infected";
+            }
        }
 
        ray.direction = Vector3.left;
-       Debug.DrawRay(transform.position, Vector3.left, Color.yellow);
+       //Debug.DrawRay(transform.position, Vector3.left, Color.yellow);
 
        if (Physics.Raycast(ray, out hit, infectionRadius) && hit.transform.CompareTag("Infected"))
        {
             //PROBABILITY STUFF HERE
-            personlogic person = hit.collider.GetComponent<personlogic>();
-            person.infect();
-            this.tag = "Infected";
-       }
+            if (rand == 69)
+            {
+                personlogic person = hit.collider.GetComponent<personlogic>();
+                person.infect();
+                this.tag = "Infected";
+            }
+        }
 
        ray.direction = Vector3.right;
-       Debug.DrawRay(transform.position, Vector3.right, Color.yellow);
+      // Debug.DrawRay(transform.position, Vector3.right, Color.yellow);
 
        if (Physics.Raycast(ray, out hit, infectionRadius) && hit.transform.CompareTag("Infected"))
        {
             //PROBABILITY STUFF HERE
-            personlogic person = hit.collider.GetComponent<personlogic>();
-            person.infect();
-            this.tag = "Infected";
+            if (rand == 69)
+            {
+                personlogic person = hit.collider.GetComponent<personlogic>();
+                person.infect();
+                this.tag = "Infected";
+            }
        }
 
 
    }
+    public void findHome()
+    {
+        bool homeFound = false;
+        while (!homeFound)
+        {
+            int j = Random.Range(0, Buildings.buildings.Count);
+            if (Buildings.buildings[j].getPeople() < 200 && Buildings.buildings[j].getType() == 1)
+            {
+                this.home = j;
+                agent.SetDestination(new Vector3(Buildings.buildings[j].getX(), 0.5f, Buildings.buildings[j].getZ()));
+                Debug.Log(j);
+                homeFound = true;
+            }else Debug.Log(j + " bad home");
+        }
+    }
+    public void goHome()
+    {
+
+    }
 
 }

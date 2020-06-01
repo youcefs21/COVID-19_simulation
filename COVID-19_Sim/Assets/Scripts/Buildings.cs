@@ -43,11 +43,12 @@ public class Buildings : MonoBehaviour {
     }
 
     public struct Building {
-        float x,z,type;
+        float x,z,type, people;
         public Building (float x, float z, float type){
             this.x = x;
             this.z = z;
             this.type = type;
+            this.people = 0;
         }
 
         public float getX()
@@ -58,6 +59,26 @@ public class Buildings : MonoBehaviour {
         public float getZ()
         {
             return this.z;
+        }
+
+        public float getType()
+        {
+            return this.type;
+        }
+
+        public float getPeople()
+        {
+            return this.people;
+        }
+
+        public void addPeople(float num)
+        {
+            this.people += num;
+        }
+
+        public void setPeople(float num)
+        {
+            this.people = num;
         }
 
     }
