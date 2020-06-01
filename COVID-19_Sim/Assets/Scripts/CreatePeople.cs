@@ -4,41 +4,68 @@ using UnityEngine;
 
 public class CreatePeople : MonoBehaviour
 {
+    int p = 2;
     public personlogic personTemplate;
-    public personlogic[] peopleArray = new personlogic[50];
+    public personlogic[] peopleArray;
+    public static int susceptible;
+    public static int infected = 0;
 
-    int toSpawn;
-    int timestamps = 0;
+    float timestamps = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        toSpawn = 10;
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        //Debug.Log(Time.time);
-        if (Time.time > timestamps)
+        susceptible = p;
+
+        peopleArray = new personlogic[p];
+        int houses = Buildings.residental.Count;
+        int jobs = Buildings.workplaces.Count;
+        bool infected = false;
+        Debug.Log(houses);
+        for (int i = 0; i < p; i++)
         {
-            if (toSpawn > 0)
+            int brah = Random.Range(0, houses - 1);
+            float x = Buildings.residental[brah].getX();
+            float z = Buildings.residental[brah].getZ();
+
+            brah = Random.Range(0, jobs - 1);
+            float x2 = Buildings.workplaces[brah].getX();
+            float z2 = Buildings.workplaces[brah].getZ();
+
+            if (i == 21)
             {
-                timestamps = timestamps+1;
-                toSpawn--;
-                for (int i = 0; i<5;i++)
-                {
-                    personlogic personClone = Instantiate(personTemplate, new Vector3(23.5f, 0.5f, -52.15f), Quaternion.identity);
-                    if (toSpawn == 3)
-                    {
-                        personClone.infect();
-                    }
-                    
-                }
-
-                
-
+                infected = true;
             }
+
+            
+
+            personlogic person = Instantiate(personTemplate, new Vector3(x, 0.5f, z), Quaternion.identity);
+
+            person.home = new Vector2(x, z);
+            person.work = new Vector2(x2, z2);
+            person.atHome = true;
+            person.working = false;
+            person.shopping = false;
+
+            person.needStore = Random.Range(0, 10);
+            person.needWork = Random.Range(0, 10);
+
+            if (person.needWork == person.needStore)
+            {
+                person.needWork += Random.Range(0, 5);
+            }
+
+            person.workTime = Random.Range(0, 10);
+            person.storeTime = Random.Range(0, 10);
+            if (infected)
+            {
+                person.infect();
+                infected = false;
+            }
+            
+            //person.gameObject.SetActive(false);
         }
+
     }
 }
 
